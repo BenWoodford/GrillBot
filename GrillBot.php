@@ -3,12 +3,15 @@ require_once("vendor/ProtoIRC/protoirc.php");
 
 
 class GrillBot {
-	private $irc;
+	public $irc;
 
 	function __construct($config) {
-		$connectstring = $config['server']['host'] . ':' . $config['server']['port'];
-		echo "Connecting to " . $connectstring . "\n";
+		$connectstring = "irc://" . $config['user']['nick'] . ":" . $config['user']['token'] . "@" . $config['server']['host'] . ":" . $config['server']['port'] . "/cueball61";
+
+		echo "String: " . $connectstring . "\n";
+
 		$this->irc = new ProtoIRC($connectstring, function($irc) {
+			echo "Test.\n";
 			$irc->stdout("Connected.");
 			$irc->send('USER ' . $config['user']['nick']);
 			$irc->send('PASS ' . $config['user']['token']);
@@ -22,7 +25,18 @@ class GrillBot {
 	}
 
 	function start() {
+		$this->setup();
+		var_dump($this->irc);
 		$this->irc->go();
-		echo "Um.\n";
+	}
+
+	function setup() {
+		$this->irc->msg('/^echo (.*)/', function ($irc, $nick, $channel, $line) {
+			$irc->send($irc->last, $line);
+		});
+
+		$this->irc->in('/(.*)/', function ($irc, $line) {
+  			$irc->stdout("<< {$line}\n", '_black');
+		});
 	}
 }
