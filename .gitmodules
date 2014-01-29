@@ -1,0 +1,3 @@
+[submodule "vendor/ProtoIRC"]
+	path = vendor/ProtoIRC
+	url = https://github.com/ZaneA/ProtoIRC.git
