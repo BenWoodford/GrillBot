@@ -7,11 +7,10 @@ class JoinChannel implements IGrillPlugin {
 	}
 
 	public function setupHandlers($irc) {
-		$irc->registerActionhandler(SMARTIRC_TYPE_QUERY, 'HISTORYEND (\w*)', $this, 'didJoin');
 	}
 
-	public function didJoin(&$irc, &$data) {
-		$irc->message( $data->type, "#" . $data->messageex[1], 'Hellooo!');
+	public function eventOnJoin($irc, $channel) {
+		$irc->message(SMARTIRC_TYPE_CHANNEL, $channel, 'Hellooo!');
 	}
 }
 ?>

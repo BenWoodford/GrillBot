@@ -12,12 +12,14 @@ class CommandGrill implements IGrillPlugin {
 	}
 
 	public function doJoin(&$irc, &$data) {
-		$irc->join("#" . $data->nick);
+		$this->bot->join("#" . $data->nick);
 	}
 
 	public function doLeave(&$irc, &$data) {
-		if($irc->isOpped($data->channel, $data->nick) || substr($data->channel, 1) == $data->nick) // Op or Owner
-			$irc->part($data->channel);
+		if($irc->isOpped($data->channel, $data->nick) || substr($data->channel, 1) == $data->nick) { // Op or Owner
+			$irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, "ok :'(");
+			$this->bot->leave($data->channel);
+		}
 		else
 			$irc->log(SMARTIRC_DEBUG_NOTICE, "User " . $data->nick . " is not op in " . $data->channel);
 	}
