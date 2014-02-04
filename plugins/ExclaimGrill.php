@@ -71,17 +71,9 @@ class ExclaimGrill implements IGrillPlugin {
 	}
 
 	public function reloadLines() {
-		if(!file_exists("data/")) {
-			mkdir("data");
-			echo "Created data directory.\n";
-		}
-		if(!file_exists("data/exclamations.txt")) {
-			touch("data/exclamations.txt");
-			echo "Created Exclamations File... nothing in it though.\n";
-			return;
-		}
+		$this->bot->checkData("exclamations.txt");
 
-		$file = file_get_contents("data/exclamations.txt");
+		$file = $this->bot->getData("exclamations.txt");
 		$tmplines = explode("\n", $file);
 		$this->lines = array();
 

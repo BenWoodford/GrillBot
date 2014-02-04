@@ -37,6 +37,33 @@ class GrillBot {
 		foreach($this->config['channels'] as $chan) {
 			$this->join($chan);
 		}
+
+		$this->callPluginEvent('eventOnConnect');
+	}
+
+	function checkData($filename) {
+		if(!file_exists("data/")) {
+			mkdir("data");
+			echo "Created data directory.\n";
+		}
+
+		if(!file_exists("data/" . $filename)) {
+			touch("data/" . $filename);
+			echo "Created " . $filename . "\n";
+		}
+	}
+
+	function getData($filename) {
+		if(!file_exists("data/" . $filename)) {
+			echo "WARNING: Tried to retrieve data file " . $filename . " but it doesn't exist!";
+			return "";
+		}
+
+		return file_get_contents("data/" . $filename);
+	}
+
+	function saveData($filename, $data) {
+		file_put_contents("data/" . $filename, $data);
 	}
 
 	function checkCooldown($channel, $key, $time) {
