@@ -11,6 +11,7 @@ class CommandGrill implements IGrillPlugin {
 	public function setupHandlers($irc) {
 		$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL|SMARTIRC_TYPE_QUERY|SMARTIRC_TYPE_NOTICE, '^!join$', $this, 'doJoin');
 		$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!leave$', $this, 'doLeave');
+		$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '^!who$', $this, 'doWho');
 	}
 
 	public function doJoin(&$irc, &$data) {
@@ -52,6 +53,30 @@ class CommandGrill implements IGrillPlugin {
 
 	public function saveChannels() {
 		$this->bot->saveData("channels.txt", implode("\n", $this->channels));
+	}
+
+	public function doWho(&$irc, &$data) {
+		$users = $irc->channel[$data->channel]->users;
+
+		$string = "Viewers: ";
+		$i = 5;
+		foreach($users as $user) {
+			if($irc->isMe($user->nick))
+				continue;
+
+			$string .= $user->nick . ", ";
+			$i--;
+			if($i == 0)
+				break;
+		}
+
+		$string = substr($string, 0, -2);
+
+		if(count($users) - $i > 0) {
+			$string .= " and " . count($users) - $i . " more.";
+		}
+
+		$irc->message(SMARTIRC_TYPE_CHANNEL, $data->channel, $string);
 	}
 }
 ?>

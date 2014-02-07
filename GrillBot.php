@@ -16,7 +16,7 @@ class GrillBot {
 		$this->irc = new Net_SmartIRC();
 		$this->irc->setUseSockets(true);
 		$this->irc->setChannelSyncing(true);
-    	//$this->irc->setDebug(SMARTIRC_DEBUG_ALL);
+    	$this->irc->setDebug(SMARTIRC_DEBUG_ALL);
 		$this->irc->connect($config['server']['host'], $config['server']['port']);
 		$this->irc->login($config['user']['nick'], $config['user']['realname'], 8, 'GrillBot',$config['user']['token']);
 		$this->irc->registerTimeHandler(3000, $this, 'postSetup'); // For after connection.

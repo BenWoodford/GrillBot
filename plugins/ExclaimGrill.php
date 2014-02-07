@@ -25,7 +25,7 @@ class ExclaimGrill implements IGrillPlugin {
 		$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '/^!reload$/i', $this, 'doReload');
 		$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '/^!shutup$/i', $this, 'doShutup');
 		$irc->registerActionhandler(SMARTIRC_TYPE_CHANNEL, '/^!debugline$/i', $this, 'debugLine');
-		$irc->registerTimeHandler(5000, $this, 'checkExclaims');
+		$irc->registerTimeHandler(20000, $this, 'checkExclaims');
 	}
 
 	public function didMsg(&$irc, &$data) {
