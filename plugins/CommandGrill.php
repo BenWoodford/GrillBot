@@ -61,13 +61,12 @@ class CommandGrill implements IGrillPlugin {
 		$string = "Viewers: ";
 		$i = 5;
 		foreach($users as $user) {
-			if($irc->isMe($user->nick))
-				continue;
-
-			$string .= $user->nick . ", ";
-			$i--;
-			if($i == 0)
-				break;
+			if(!$irc->isMe($user->nick)) {
+				$string .= $user->nick . ", ";
+				$i--;
+				if($i == 0)
+					break;
+			}
 		}
 
 		$string = substr($string, 0, -2);
